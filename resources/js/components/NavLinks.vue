@@ -2,7 +2,7 @@
     <div class="mainDiv flex align-center justify-evenly">
 
         <div class="flex thePC_Version">
-            <nav-links-options></nav-links-options>
+            <nav-links-options :shared_access_token="shared_access_token" :users_role="users_role"></nav-links-options>
         </div>
 
         <div class="hamburger">
@@ -51,7 +51,7 @@
 
     </div>
     <div class="ml-5 mobileMenuOptions" v-if="toggleMobileMenu">
-        <nav-links-options></nav-links-options>
+        <nav-links-options :shared_access_token="shared_access_token" :users_role="users_role"></nav-links-options>
     </div>
 
 
@@ -63,6 +63,12 @@ import NavLinksOptions from "./NavLinksOptions.vue";
 export default {
     name: "NavLinks",
     components: {NavLinksOptions},
+
+    props:[
+        'shared_access_token',
+        'users_role',
+    ],
+
     data() {
         return {
             toggleMobileMenu: false,

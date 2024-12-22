@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\IbanRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\EcoCodesResource;
 use App\Http\Resources\ListOfCitiesResource;
 use App\Http\Resources\LocalitatiResource;
@@ -9,12 +10,31 @@ use App\Models\EcoCodes;
 use App\Models\Iban;
 use App\Models\Localitati;
 use App\Models\Raion;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
     public function index(){
         return view('welcome');
+    }
+    public function getUser(Request $request){
+        $user = Auth::user();
+        $role = $user->role;
+        return response()->json([
+            'user'=>$user,
+            'role'=>$role,
+        ]);
+    }
+
+    public function register(StoreUserRequest $request){
+        $data = $request->validated();
+        $user = User::firstOrCreate($data);
+        $token = auth()->tokenById($user->id);
+        return response()->json([
+            'access_token'=>$token
+        ]);
     }
 
     public function returnEcoRaionLocalitate(){

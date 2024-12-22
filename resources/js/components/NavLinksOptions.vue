@@ -66,11 +66,68 @@
             <a href="#">Instruire și dezvoltarea capacităților</a>
         </div>
     </div>
+
+
+
+
+    <div class="dropDownMenu mt-[12px]">
+<!--        <router-link-->
+<!--            v-if="$parent.$parent.access_token"-->
+<!--            :to="{name: 'SearchIban'}"-->
+<!--            class="btnLink p-3 hover:bg-emerald-800 text-white"-->
+<!--        >-->
+<!--            Ibans-->
+<!--        </router-link>-->
+
+        <!-- Fix versiunea de mai sus doar ca cu props!-->
+        <div class="links">
+
+        </div>
+        <router-link
+            v-if="shared_access_token"
+            :to="{name: 'SearchIban'}"
+            class="btnLink p-3 hover:bg-emerald-800 text-white"
+        >
+            Ibans
+        </router-link>
+
+        <router-link
+            v-if="shared_access_token && users_role === 'admin'"
+            :to="{name: 'AdminMenu'}"
+            class="btnLink p-3 hover:bg-emerald-800 text-white"
+        >
+            Admin_Menu
+        </router-link>
+
+    </div>
+
 </template>
 
 <script>
+import api from "../api";
+import router from "../router";
+
 export default {
-    name: "NavLinksOptions"
+    name: "NavLinksOptions",
+    props:[
+        'shared_access_token',
+        'users_role',
+    ],
+
+    methods: {
+        // seeAccessToken(){
+        //     console.log(this.$parent.$parent.access_token);
+        // },
+
+    },
+    mounted() {
+
+    },
+    updated(){
+
+    },
+
+
 }
 </script>
 
@@ -100,10 +157,11 @@ export default {
     padding: 6px 16px;
 }
 
+
+
 .btnLink:hover {
     background: linear-gradient(to bottom, #314663, rgb(26, 49, 80));
 }
-
 
 
 </style>

@@ -55,7 +55,7 @@
             <hr class="invisibleHr">
 
             <button class="afiseazaCodulIban" @click.prevent="afiseazaIban">Afișează codul iban</button>
-            <p v-if="theIbanCode">{{theIbanCode}}</p>
+            <p class="mt-1" v-if="theIbanCode">{{theIbanCode}}</p>
             <hr>
         </div>
     </div>
@@ -77,12 +77,12 @@ export default {
             localitateDefaultCode: "",
 
             theIbanCode:null,
+            raionul_Utilizatorului:null,
         }
     },
     methods: {
         selectInformation() {
             axios.get('/api/selectInfo').then(res => {
-
                 this.eco_codes = res.data.eco_codes;
                 if (this.eco_codes.length > 0) {
                     this.ecoDefaultCode = this.eco_codes[0].codul;
@@ -131,12 +131,29 @@ export default {
             // console.log("Localitatea selectata: " + this.localitateDefaultCode);
 
             axios.post('/api/extractIban', {'eco':this.ecoDefaultCode, 'raion':this.raionDefaultCode, 'localitate':this.localitateDefaultCode}).then(res =>{
-                this.theIbanCode = res.data.iban_code;
-            })
+                if(res.data?.iban_code){
+                    this.theIbanCode = res.data.iban_code;
+                }else{
+                    this.theIbanCode = "Codul Iban cu aceste criterii nu a fost gasit!";
+                }
+            }).catch(error => {
+                console.error("There was an error:", error);
+                this.theIbanCode = "Eroare la extragerea codului IBAN!";
+            });
+        },
+        setDefaultValue(){
+            if(this.$parent.$parent.raionul_utilizatorului){
+                console.log("Raionul Utlizator:"+this.$parent.$parent.raionul_utilizatorului);
+                this.raionul_Utilizatorului =this.$parent.$parent.raionul_utilizatorului;
+            }
         }
     },
     mounted() {
         this.selectInformation();
+        this.setDefaultValue();
+    },
+    updated() {
+        this.setDefaultValue();
     }
 }
 </script>
