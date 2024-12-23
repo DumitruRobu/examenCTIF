@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\EcoCodesResource;
 use App\Http\Resources\ListOfCitiesResource;
 use App\Http\Resources\LocalitatiResource;
+use App\Http\Resources\UsersResource;
 use App\Models\EcoCodes;
 use App\Models\Iban;
 use App\Models\Localitati;
@@ -27,6 +28,10 @@ class MainController extends Controller
             'role'=>$role,
         ]);
     }
+    public function getAllUsers(){
+        $allUsers = User::all();
+        return UsersResource::collection($allUsers);
+    }
 
     public function register(StoreUserRequest $request){
         $data = $request->validated();
@@ -38,15 +43,23 @@ class MainController extends Controller
     }
 
     public function returnEcoRaionLocalitate(){
+        $user = Auth::user();
+        if($user->raion_id){
+            $listOfCities=Raion::where('id', $user->raion_id)->get();
+            $listOfLocalities=Localitati::where('raion_id', $user->raion_id)->get();
+        }else{
+            $listOfCities = Raion::all();
+            $listOfLocalities = Localitati::where('raion_id', 1)->get();
+        }
+
         //without eager method:
         $listOfEco = EcoCodes::all();
-        $listOfCities = Raion::all();
-        $listOfLocalities = Localitati::where('raion_id', 1)->get();
 
         return response()->json([
             'eco_codes' => EcoCodesResource::collection($listOfEco),
             'cities' => ListOfCitiesResource::collection($listOfCities),
             'localities' => LocalitatiResource::collection($listOfLocalities),
+
         ]);
 
         //Folsim eager loading method:

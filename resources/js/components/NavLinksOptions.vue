@@ -142,6 +142,9 @@ export default {
 
     }
 }
+.dropDownMenu{
+    z-index: 999;
+}
 
 .dropDownMenu:hover .links {
     display: block;

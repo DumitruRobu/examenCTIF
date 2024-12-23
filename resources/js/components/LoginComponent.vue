@@ -74,12 +74,14 @@ export default {
     gap: 10px;
     box-shadow: 0 0 5px rgba(184, 184, 184, 0.5);
     width: 30%;
+    height:100%;
     min-width: 250px;
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 30px;
+
 
     input {
         background-color: transparent;
@@ -89,6 +91,7 @@ export default {
         margin: auto;
         margin-top: 0;
         margin-bottom: 0;
+
     }
 
     label {

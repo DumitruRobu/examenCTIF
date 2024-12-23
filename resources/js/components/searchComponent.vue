@@ -57,13 +57,33 @@
             <button class="afiseazaCodulIban" @click.prevent="afiseazaIban">Afișează codul iban</button>
             <p class="mt-1" v-if="theIbanCode">{{theIbanCode}}</p>
             <hr>
+
+            <a class="mt-5 text-sky-900" href="https://mf.gov.md/sites/default/files/OMF%20cu%20modificari%20aprilie%2024_0.pdf">Ordinul nr. 125 din 22.12.2023 cu privire la modul de achitare şi evidență a plăților la bugetul public naţional prin sistemul trezorerial al Ministerului Finanţelor în anul 2024
+            </a>
+
+            <div class="ytEmbed mt-5 mb-8">
+                <iframe width="560" height="315"
+                        src="https://www.youtube.com/embed/XbXr7tTM7Dw?si=6nH2mnai1zNgAqXL"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+                        gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
+            </div>
+
         </div>
+
+
+
+
     </div>
 
 
 </template>
 
 <script>
+import api from '../api';
+
 export default {
     name: "searchComponent",
     data() {
@@ -77,13 +97,17 @@ export default {
             localitateDefaultCode: "",
 
             theIbanCode:null,
-            raionul_Utilizatorului:null,
         }
     },
+
+    props:['shared_variabila_Raionul_utilizatorului'],
+
     methods: {
         selectInformation() {
-            axios.get('/api/selectInfo').then(res => {
+            api.get('/api/auth/selectInfo').then(res => {
                 this.eco_codes = res.data.eco_codes;
+                console.log(res.data.user);
+
                 if (this.eco_codes.length > 0) {
                     this.ecoDefaultCode = this.eco_codes[0].codul;
                 }
@@ -113,7 +137,7 @@ export default {
             });
         },
         updateLocalities(event) {
-            axios.get(`/api/updateLocalities/${event.target.value}`).then(res => {
+            api.get(`/api/auth/updateLocalities/${event.target.value}`).then(res => {
                 this.localitati = res.data.localities.map(localitate => ({
                     name: localitate.name,
                     code: localitate.codul,
@@ -126,34 +150,29 @@ export default {
         },
 
         afiseazaIban() {
-            // console.log("Codul eco selectat: "+this.ecoDefaultCode);
-            // console.log("Raionul selectat: " + this.raionDefaultCode);
-            // console.log("Localitatea selectata: " + this.localitateDefaultCode);
 
-            axios.post('/api/extractIban', {'eco':this.ecoDefaultCode, 'raion':this.raionDefaultCode, 'localitate':this.localitateDefaultCode}).then(res =>{
+            api.post('/api/auth/extractIban', {'eco':this.ecoDefaultCode, 'raion':this.raionDefaultCode, 'localitate':this.localitateDefaultCode}).then(res =>{
                 if(res.data?.iban_code){
                     this.theIbanCode = res.data.iban_code;
                 }else{
-                    this.theIbanCode = "Codul Iban cu aceste criterii nu a fost gasit!";
+                    this.theIbanCode = "Codul IBAN cu aceste criterii nu a fost gasit!";
                 }
             }).catch(error => {
                 console.error("There was an error:", error);
                 this.theIbanCode = "Eroare la extragerea codului IBAN!";
             });
         },
-        setDefaultValue(){
-            if(this.$parent.$parent.raionul_utilizatorului){
-                console.log("Raionul Utlizator:"+this.$parent.$parent.raionul_utilizatorului);
-                this.raionul_Utilizatorului =this.$parent.$parent.raionul_utilizatorului;
-            }
+        seeRaionulUtilizatorului(){
+            console.log("Raionul utilizatorului: "+this.shared_variabila_Raionul_utilizatorului);
         }
     },
     mounted() {
         this.selectInformation();
-        this.setDefaultValue();
+
     },
     updated() {
-        this.setDefaultValue();
+        this.seeRaionulUtilizatorului();
+        console.log("Updated done!");
     }
 }
 </script>
@@ -228,4 +247,5 @@ hr {
         width: 285px;
     }
 }
+
 </style>

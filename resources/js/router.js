@@ -36,10 +36,16 @@ const router = createRouter({
             meta: {requiresAdmin: true},
         },
         {
+            path: '/user/:id',
+            name: 'EditUser',
+            component: () => import('../js/components/EditUsersPage.vue')
+        },
+        {
             path: '/:pathMatch(.*)*',
             name: 'NotFound',
             component: () => import('../js/components/404.vue')
-        }
+        },
+
 
     ]
 })
