@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Iban extends Model
 {
+    use SoftDeletes;
     public $table = 'ibans';
     protected $fillable =['codul_eco','raion','localitatea','iban_code'];
 }

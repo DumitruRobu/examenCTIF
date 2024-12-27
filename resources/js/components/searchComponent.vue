@@ -21,11 +21,8 @@
 
             <div class="childDiv">
                 <span>Codul Eco:</span>
-
-
                 <select v-model="ecoDefaultCode"
                         class="w-[310px] h-[25px] selectul rounded-sm bg-gray-50 border border-sky-500 text-black text-sm focus:ring-2 focus:ring-blue-500 focus:ring-opacity-25 focus:outline-none block">
-
                     <option v-for="eco_code in eco_codes" :value="eco_code.codul">{{ eco_code.codul }}</option>
                 </select>
             </div>
@@ -35,8 +32,7 @@
                 <span>Raionul:</span>
                 <select @change="updateLocalities" v-model="raionDefaultCode"
                         class="w-[310px] h-[25px] selectul rounded-sm bg-gray-50 border border-sky-500 text-black text-sm focus:ring-2 focus:ring-blue-500 focus:ring-opacity-25 focus:outline-none block">
-                    <option v-for="raion in raioane" :value="raion.code" :key="raion.code">{{ raion.code }} -
-                        {{ raion.name }}
+                    <option v-for="raion in raioane" :value="raion.code" :key="raion.code">{{ raion.code + " - " + raion.name }}
                     </option>
                 </select>
             </div>
@@ -150,10 +146,9 @@ export default {
         },
 
         afiseazaIban() {
-
             api.post('/api/auth/extractIban', {'eco':this.ecoDefaultCode, 'raion':this.raionDefaultCode, 'localitate':this.localitateDefaultCode}).then(res =>{
-                if(res.data?.iban_code){
-                    this.theIbanCode = res.data.iban_code;
+                if(res.data.data?.codul_iban){
+                    this.theIbanCode = res.data.data.codul_iban;
                 }else{
                     this.theIbanCode = "Codul IBAN cu aceste criterii nu a fost gasit!";
                 }
@@ -247,5 +242,4 @@ hr {
         width: 285px;
     }
 }
-
 </style>

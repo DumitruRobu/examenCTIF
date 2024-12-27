@@ -36,9 +36,34 @@ const router = createRouter({
             meta: {requiresAdmin: true},
         },
         {
+            path: '/admin/add',
+            name: 'AdaugaUtilizator',
+            component: () => import('../js/components/AdaugaUtilizator.vue'),
+            meta: {requiresAdmin: true},
+        },
+        {
+            path: '/admin/genereazaIban',
+            name: 'GenereazaIban',
+            component: () => import('../js/components/GenereazaIban.vue'),
+            meta: {requiresAdmin: true},
+        },
+        {
+            path: '/admin/creazaCodIban',
+            name: 'creazaCodIban',
+            component: () => import('../js/components/CreazaCodIban.vue'),
+            meta: {requiresAdmin: true},
+        },
+        {
+            path: '/admin/vizualizeazaCoduriIban',
+            name: 'VizualizeazaCoduriIban',
+            component: () => import('../js/components/VizualizeazaCoduriIban.vue'),
+            meta: {requiresAdmin: true},
+        },
+        {
             path: '/user/:id',
             name: 'EditUser',
-            component: () => import('../js/components/EditUsersPage.vue')
+            component: () => import('../js/components/EditUsersPage.vue'),
+            meta: {requiresAdmin: true},
         },
         {
             path: '/:pathMatch(.*)*',

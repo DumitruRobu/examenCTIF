@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UsersResource extends JsonResource
+class IbanCodesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,10 @@ class UsersResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->name,
-            'email'=>$this->email,
-            'password'=>$this->password,
-            'raion_id'=>$this->raion,
+            'codul_eco'=>$this->codul_eco,
+            'raion'=>$this->raion,
+            'localitatea'=>$this->localitatea,
+            'codul_iban'=>$this->iban_code,
         ];
     }
 }

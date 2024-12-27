@@ -96,7 +96,7 @@
             :to="{name: 'AdminMenu'}"
             class="btnLink p-3 hover:bg-emerald-800 text-white"
         >
-            Admin_Menu
+            AdminMenu
         </router-link>
 
     </div>
